@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+db.sqlite3
+media/
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+.envs/
+
+# Dev
+.git/
+.gitignore
+README.md
+.flake8
+.pre-commit-config.yaml
+docker-compose*.yml
+
+# IDE
+.idea/
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db

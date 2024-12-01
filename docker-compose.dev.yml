@@ -1,0 +1,47 @@
+volumes:
+  telelog_dev_postgres_data: { }
+  telelog_dev_postgres_data_backups: { }
+  telelog_dev_redis_data: { }
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./docker/dev/django/Dockerfile
+    image: telelog_dev_django
+    container_name: telelog_dev_django
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/dev/.django
+      - ./.envs/dev/.postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  bot:
+    <<: *django
+    container_name: telelog_dev_bot
+    ports: [ ]
+    command: python manage.py runbot
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/dev/postgres/Dockerfile
+    image: telelog_dev_postgres
+    container_name: telelog_dev_postgres
+    volumes:
+      - telelog_dev_postgres_data:/var/lib/postgresql/data
+      - telelog_dev_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/dev/.postgres
+
+  redis:
+    image: docker.io/redis:6
+    container_name: telelog_dev_redis
+    volumes:
+      - telelog_dev_redis_data:/data
