@@ -19,3 +19,4 @@ DJANGO_ADMIN_URL=admin/
 # Telegram settings
 TELEGRAM_BOT_USERNAME=telelog_auth_bot
 TELEGRAM_BOT_TOKEN='token-example'
+TELEGRAM_AUTH_TOKEN_EXPIRATION=300

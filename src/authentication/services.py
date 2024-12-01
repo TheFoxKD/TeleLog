@@ -18,7 +18,7 @@ class TelegramAuthService:
     def generate_auth_token(self) -> str:
         """Генерирует безопасный токен для Telegram auth."""
         token = secrets.token_urlsafe(32)
-        self.redis_client.setex(token, 300, "valid")  # Токен действителен 5 минут
+        self.redis_client.setex(token, settings.TELEGRAM_AUTH_TOKEN_EXPIRATION, "valid")
         return token
 
     def validate_telegram_data(self, data: dict) -> bool:

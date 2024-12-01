@@ -48,3 +48,4 @@ docker-compose.override.yml
 .DS_Store
 Thumbs.db
 .envs/dev/.django
+temp.txt

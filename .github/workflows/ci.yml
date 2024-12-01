@@ -40,6 +40,11 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
+      - name: Set up environment files
+        run: |
+          mkdir -p .envs/dev
+          echo "${{ secrets.DJANGO_ENV }}" > .envs/dev/.django
+
       - name: Build the Stack
         run: docker compose -f docker-compose.dev.yml build django
 
