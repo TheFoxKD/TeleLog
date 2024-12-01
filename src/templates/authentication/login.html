@@ -1,0 +1,58 @@
+<!-- templates/authentication/login.html -->
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description"
+              content="Страница входа через Telegram для сервиса TeleLog">
+        <meta name="keywords" content="telegram, login, authentication, telelog">
+        <title>Вход через Telegram</title>
+        <!-- Подключение Bootstrap CSS -->
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        {% csrf_token %}
+        <style>
+            #auth-form {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <div class="container text-center">
+            <h1 class="mt-5">Вход через Telegram</h1>
+            <p>Для входа нажмите на кнопку ниже:</p>
+            <a href="{{ telegram_link }}" class="btn btn-primary">Войти через Telegram</a>
+        </div>
+        <form id="auth-form" method="post">
+            <input type="hidden" name="token" value="{{ token }}">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        </form>
+        <script>
+    function checkAuth() {
+        fetch("{% url 'authentication:login' %}", {
+            method: "POST",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams(new FormData(document.getElementById('auth-form')))
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    setTimeout(checkAuth, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при проверке аутентификации:', error);
+                setTimeout(checkAuth, 2000);
+            });
+    }
+
+    setTimeout(checkAuth, 2000);
+        </script>
+    </body>
+</html>

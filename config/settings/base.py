@@ -55,8 +55,9 @@ DJANGO_APPS = [
     "django.forms",
 ]
 LOCAL_APPS = [
-    "src.users",
-    "src.telelog",
+    "src.authentication",
+    "src.core",
+    "src.telegram",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
@@ -66,7 +67,7 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "authentication.User"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -100,7 +101,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "src.telelog.middleware.TelegramAuthMiddleware",
+    "src.core.middleware.LoginRequiredMiddleware",
 ]
 
 # STATIC
@@ -202,7 +203,16 @@ LOGGING = {
 
 REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")
 
+
+LOGIN_REDIRECT_URL = (
+    "core:dashboard"  # URL или имя маршрута для перенаправления после входа
+)
+LOGOUT_REDIRECT_URL = (
+    "authentication:login"  # URL или имя маршрута для перенаправления после выхода
+)
+
 # Telegram Bot settings
+TELEGRAM_BOT_USERNAME = env("TELEGRAM_BOT_USERNAME")
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
 TELEGRAM_LOGIN_REDIRECT_URL = env(
     "TELEGRAM_LOGIN_REDIRECT_URL",

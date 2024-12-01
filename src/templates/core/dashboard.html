@@ -1,0 +1,12 @@
+<!-- templates/core/dashboard.html -->
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <h1>Добро пожаловать, {{ user.username }}!</h1>
+        <p>Вы успешно вошли в систему через Telegram.</p>
+        <form action="{% url 'authentication:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Выйти</button>
+        </form>
+    </div>
+{% endblock content %}

@@ -26,7 +26,7 @@ services:
     <<: *django
     container_name: telelog_dev_bot
     ports: [ ]
-    command: python manage.py runbot
+    command: python manage.py run_bot
 
   postgres:
     build:
