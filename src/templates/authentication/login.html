@@ -1,43 +1,43 @@
-<!-- templates/authentication/login.html -->
-<!DOCTYPE html>
-<html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description"
-              content="Страница входа через Telegram для сервиса TeleLog">
-        <meta name="keywords" content="telegram, login, authentication, telelog">
-        <title>Вход через Telegram</title>
-        <!-- Подключение Bootstrap CSS -->
-        <link rel="stylesheet"
-              href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        {% csrf_token %}
-        <style>
-            #auth-form {
-                display: none;
-            }
-        </style>
-    </head>
-    <body class="bg-light">
-        <div class="container text-center">
-            <h1 class="mt-5">Вход через Telegram</h1>
-            <p>Для входа нажмите на кнопку ниже:</p>
-            <a href="{{ telegram_link }}" class="btn btn-primary">Войти через Telegram</a>
+{% extends "base.html" %}
+{% block title %}
+    Вход через Telegram | TeleLog
+{% endblock title %}
+{% block content %}
+    <div class="flex flex-col items-center justify-center min-h-[60vh]">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Вход через Telegram</h1>
+                <p class="text-gray-600">Для входа нажмите на кнопку ниже</p>
+            </div>
+            <a href="{{ telegram_link }}"
+               class="inline-flex items-center justify-center px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200">
+                <svg class="w-6 h-6 mr-2"
+                     fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.65.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z" />
+                </svg>
+                Войти через Telegram
+            </a>
         </div>
-        <form id="auth-form" method="post">
-            <input type="hidden" name="token" value="{{ token }}">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-        </form>
-        <script>
-    function checkAuth() {
-        fetch("{% url 'authentication:login' %}", {
-            method: "POST",
-            headers: {
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams(new FormData(document.getElementById('auth-form')))
-        })
+    </div>
+    <form id="auth-form" method="post" class="hidden">
+        {% csrf_token %}
+        <input type="hidden" name="token" value="{{ token }}">
+    </form>
+{% endblock content %}
+{% block scripts %}
+    <script>
+        function checkAuth() {
+            fetch("{% url 'authentication:login' %}", {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams(new FormData(document.getElementById('auth-form')))
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.authenticated) {
@@ -50,9 +50,8 @@
                 console.error('Ошибка при проверке аутентификации:', error);
                 setTimeout(checkAuth, 2000);
             });
-    }
+        }
 
-    setTimeout(checkAuth, 2000);
-        </script>
-    </body>
-</html>
+        setTimeout(checkAuth, 2000);
+    </script>
+{% endblock scripts %}

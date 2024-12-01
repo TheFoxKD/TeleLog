@@ -26,6 +26,11 @@ USE_I18N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True
 
+# Site settings
+SITE_DOMAIN = env("SITE_DOMAIN", default="localhost:8000/")
+SITE_PROTOCOL = env("SITE_PROTOCOL", default="http")
+SITE_URL = f"{SITE_PROTOCOL}://{SITE_DOMAIN}"
+
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
@@ -214,7 +219,3 @@ LOGOUT_REDIRECT_URL = (
 # Telegram Bot settings
 TELEGRAM_BOT_USERNAME = env("TELEGRAM_BOT_USERNAME")
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
-TELEGRAM_LOGIN_REDIRECT_URL = env(
-    "TELEGRAM_LOGIN_REDIRECT_URL",
-    default="http://localhost:8000/auth/telegram/callback",
-)

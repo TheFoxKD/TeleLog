@@ -1,0 +1,21 @@
+# =============================================================================
+# GENERAL CONFIGURATION
+# =============================================================================
+# Docker and development settings
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+
+# =============================================================================
+# REDIS CONFIGURATION
+# =============================================================================
+# Redis connection URL for caching and message broker
+REDIS_URL=redis://redis:6379/0
+
+# =============================================================================
+# DJANGO CONFIGURATION
+# =============================================================================
+# Core Django settings
+DJANGO_ADMIN_URL=admin/
+# Telegram settings
+TELEGRAM_BOT_USERNAME=telelog_auth_bot
+TELEGRAM_BOT_TOKEN='token-example'
