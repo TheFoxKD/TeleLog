@@ -49,3 +49,4 @@ docker-compose.override.yml
 Thumbs.db
 .envs/dev/.django
 temp.txt
+.coverage

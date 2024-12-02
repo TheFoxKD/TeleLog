@@ -40,9 +40,10 @@ class TestTelegramAuthService:
     @pytest.mark.parametrize(
         "auth_date,expected",
         [
-            (int(time.time()), True),
-            (int(time.time()) - 86400 + 1, True),
-            (int(time.time()) - 86400 - 1, False),
+            (int(time.time()), True),  # current time
+            (int(time.time()) - 86400 + 1, True),  # just under 24 hours ago
+            (int(time.time()) - 86400 - 1, False),  # just over 24 hours ago
+            (int(time.time()) + 100, False),  # future time
         ],
     )
     def test_validate_telegram_data_auth_date(self, auth_service, telegram_auth_data, auth_date, expected):

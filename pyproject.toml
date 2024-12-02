@@ -57,6 +57,7 @@ dev = [
     "factory-boy>=3.3.1",
     "faker>=33.1.0",
     "pytest-cov>=6.0.0",
+    "python-coveralls>=2.9.3",
 ]
 
 

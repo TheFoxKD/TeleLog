@@ -28,12 +28,21 @@ class TelegramAuthService:
         if not all(field in data for field in required_fields):
             raise KeyError(f"Отсутствуют обязательные поля: {', '.join(required_fields)}")
 
-        auth_date = int(data.get("auth_date", 0))
-        if time.time() - auth_date > 86400:
+        auth_date = int(data["auth_date"])
+        current_time = int(time.time())
+
+        # Проверяем, что auth_date не из будущего и не старше 24 часов
+        time_diff = current_time - auth_date
+        if time_diff < 0 or time_diff > 86400:
             return False
 
-        check_hash = data.pop("hash")
-        data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(data.items()) if v is not None)
+        data_check = data.copy()
+        check_hash = data_check.pop("hash")
+
+        # Формируем строку для проверки
+        data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(data_check.items()) if v is not None)
+
+        # Создаем секретный ключ и хеш
         secret_key = hashlib.sha256(settings.TELEGRAM_BOT_TOKEN.encode()).digest()
         hmac_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
 
