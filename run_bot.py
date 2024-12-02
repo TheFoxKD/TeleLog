@@ -1,8 +1,10 @@
 # run_bot.py
 
 import os
+
 import django
 from src.telegram.bot import TeleLogBot
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "telelog.settings.local")
 django.setup()

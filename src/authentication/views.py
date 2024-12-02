@@ -32,9 +32,7 @@ class AuthView(View):
             user_id = int(user_id.decode("utf-8"))
             user = User.objects.get(id=user_id)
             login(request, user)
-            return JsonResponse(
-                {"authenticated": True, "redirect_url": reverse("core:dashboard")}
-            )
+            return JsonResponse({"authenticated": True, "redirect_url": reverse("core:dashboard")})
         else:
             return JsonResponse({"authenticated": False})
 

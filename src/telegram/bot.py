@@ -3,8 +3,8 @@
 import asyncio
 
 from asgiref.sync import sync_to_async
-from django.conf import settings
 
+from django.conf import settings
 from src.authentication.services import TelegramAuthService
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackContext, CommandHandler
@@ -13,9 +13,7 @@ from telegram.ext import ApplicationBuilder, CallbackContext, CommandHandler
 class TeleLogBot:
     def __init__(self):
         self.auth_service = TelegramAuthService()
-        self.application = (
-            ApplicationBuilder().token(settings.TELEGRAM_BOT_TOKEN).build()
-        )
+        self.application = ApplicationBuilder().token(settings.TELEGRAM_BOT_TOKEN).build()
         self.site_url = settings.SITE_URL
         start_handler = CommandHandler("start", self.handle_start)
         self.application.add_handler(start_handler)
@@ -37,12 +35,8 @@ class TeleLogBot:
         token = args[0]
         if self.validate_token(token):
             telegram_data = update.effective_user.to_dict()
-            user = await sync_to_async(self.auth_service.create_or_update_user)(
-                telegram_data
-            )
-            await sync_to_async(self.auth_service.redis_client.setex)(
-                f"auth_{token}", 300, user.id
-            )
+            user = await sync_to_async(self.auth_service.create_or_update_user)(telegram_data)
+            await sync_to_async(self.auth_service.redis_client.setex)(f"auth_{token}", 300, user.id)
             await update.message.reply_text(
                 "✅ Отлично! Вы успешно авторизованы в системе TeleLog!\n\n"
                 "Теперь вы можете:\n"

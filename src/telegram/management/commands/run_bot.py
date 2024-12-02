@@ -1,6 +1,5 @@
 # src/telegram/management/commands/run_bot.py
 from django.core.management.base import BaseCommand
-
 from src.telegram.bot import TeleLogBot
 
 

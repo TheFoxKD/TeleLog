@@ -2,6 +2,7 @@
 from .base import *  # noqa: F403
 from .base import INSTALLED_APPS, REDIS_URL, env
 
+
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug

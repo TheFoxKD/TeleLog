@@ -5,6 +5,7 @@ from pathlib import Path
 
 import environ
 
+
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = BASE_DIR / "src"
 env = environ.Env()
@@ -209,16 +210,10 @@ LOGGING = {
 REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")
 
 
-LOGIN_REDIRECT_URL = (
-    "core:dashboard"  # URL или имя маршрута для перенаправления после входа
-)
-LOGOUT_REDIRECT_URL = (
-    "authentication:login"  # URL или имя маршрута для перенаправления после выхода
-)
+LOGIN_REDIRECT_URL = "core:dashboard"  # URL или имя маршрута для перенаправления после входа
+LOGOUT_REDIRECT_URL = "authentication:login"  # URL или имя маршрута для перенаправления после выхода
 
 # Telegram Bot settings
 TELEGRAM_BOT_USERNAME = env("TELEGRAM_BOT_USERNAME")
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
-TELEGRAM_AUTH_TOKEN_EXPIRATION = env.int(
-    "TELEGRAM_AUTH_TOKEN_EXPIRATION", default=300
-)  # 5 minutes in seconds
+TELEGRAM_AUTH_TOKEN_EXPIRATION = env.int("TELEGRAM_AUTH_TOKEN_EXPIRATION", default=300)  # 5 minutes in seconds

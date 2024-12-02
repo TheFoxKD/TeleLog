@@ -44,11 +44,65 @@ prod = [
     "gunicorn>=23.0.0",
 ]
 
-[tool.ruff]
-target-version = "py312"
-
 [dependency-groups]
 dev = [
     "django-extensions>=3.2.3",
+    "pytest-django>=4.9.0",
+    "pytest>=8.3.4",
     "werkzeug>=3.1.3",
+    "pytest-asyncio>=0.24.0",
+    "pytest-sugar>=1.0.0",
+    "pytest-factoryboy>=2.7.0",
+    "coverage>=7.6.8",
+    "factory-boy>=3.3.1",
+    "faker>=33.1.0",
+    "pytest-cov>=6.0.0",
 ]
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py", "*_test.py"]
+addopts = """
+    --ds=config.settings.test
+    --reuse-db
+    --tb=short
+    --strict-markers
+    --strict-config
+    -v
+    -p no:warnings
+    --cov=src
+    --cov-report=term-missing
+    --cov-report=html
+"""
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+]
+
+[tool.ruff]
+line-length = 119
+target-version = "py312"
+
+[tool.ruff.lint]
+# Never enforce `E501` (line length violations).
+ignore = ["C901", "E501", "E741", "F402", "F823"]
+select = ["C", "E", "F", "I", "W"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+known-first-party = ["django"]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
